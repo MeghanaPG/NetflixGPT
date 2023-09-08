@@ -1,15 +1,18 @@
 import { useRef, useState } from "react";
 import Header from "./Header"; 
 import { checkValidDataSignInForm, checkValidDataSignUpForm } from "../Utils/validate";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../Utils/firebase";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../Utils/userSlice";
 
 const Login = () => {
     // Using useState Variable to toggle between sign in and sign up form.
     const [isSignInForm, setIsSignInForm] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const name = useRef(null);
     const email = useRef(null);
@@ -44,10 +47,28 @@ const Login = () => {
             .then((userCredential) => {
                 // Signed in 
                 const user = userCredential.user;
+                updateProfile(user, {
+                    displayName: name.current.value, 
+                    photoURL: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8PE_d9489lEd42O4p_dq-hZWOWa9a13HY6Ko775w&amp;s", 
+                  })
+                  .then(() => {
+                    const {uid, email, displayName, photoURL} = auth.currentUser;
+                    dispatch(
+                        addUser({
+                        uid: uid, 
+                        email: email, 
+                        displayName: displayName, 
+                        photoURL:photoURL 
+                    })
+                    ); 
+                    // Profile updated!
+                    // As soon as the user signs in, we want to direct that user to the browse page 
+                    navigate("/browse");
+                  }).catch((error) => {
+                    // An error occurred
+                    setErrorMessage(error.message);
+                  });
                 console.log(user);
-                // As soon as the user signs in, we want to direct that user to the browse page 
-                navigate("/browse")
-                // This user information can be pushed into the redux store.
             })
             .catch((error) => {
                 const errorCode = error.code;

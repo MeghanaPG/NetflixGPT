@@ -28,6 +28,7 @@
 - Fetch data for trailer video 
 - Update Store with Trailer Video Data 
 - Tailwind Classes to make Main Container Look better 
+- Build Secondary Components 
 
 # Features 
 - Login / Sign Up 

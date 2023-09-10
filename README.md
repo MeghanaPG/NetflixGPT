@@ -29,6 +29,17 @@
 - Update Store with Trailer Video Data 
 - Tailwind Classes to make Main Container Look better 
 - Build Secondary Components 
+- Build Movie List 
+- Build Movie Card 
+- TMDB Image CDN URL 
+- usePopularMovies, useTrendingMovies, useTopRatedMovies custom hooks 
+- GPT Search Feature 
+- GPT Search Page 
+- GPT Search Bar 
+- Multi-language Feature in App
+
+
+
 
 # Features 
 - Login / Sign Up 
